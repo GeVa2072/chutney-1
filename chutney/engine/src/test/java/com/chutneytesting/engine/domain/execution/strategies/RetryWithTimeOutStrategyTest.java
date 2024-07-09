@@ -42,6 +42,7 @@ import com.chutneytesting.engine.domain.execution.engine.scenario.ScenarioContex
 import com.chutneytesting.engine.domain.execution.engine.step.Step;
 import com.chutneytesting.engine.domain.execution.report.Status;
 import com.chutneytesting.tools.Jsons;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
@@ -56,6 +57,7 @@ import org.springframework.util.ReflectionUtils;
 
 public class RetryWithTimeOutStrategyTest {
 
+    private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
     private final RetryWithTimeOutStrategy strategyUnderTest = new RetryWithTimeOutStrategy();
 
     private StrategyProperties properties(String timeOut, String retryDelay) {
@@ -240,7 +242,7 @@ public class RetryWithTimeOutStrategyTest {
     @Test
     public void should_resolve_name_from_context_with_strategy_retry() {
         // G
-        final TestEngine testEngine = new ExecutionConfiguration().embeddedTestEngine();
+        final TestEngine testEngine = new ExecutionConfiguration(objectMapper).embeddedTestEngine();
         ExecutionRequestDto requestDto = Jsons.loadJsonFromClasspath("scenarios_examples/retryStrategy/retry_strategy_step_with_name_resolver_from_context_put.json", ExecutionRequestDto.class);
 
         // W

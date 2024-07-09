@@ -33,6 +33,7 @@ import com.chutneytesting.engine.domain.execution.engine.step.Step;
 import com.chutneytesting.engine.domain.execution.report.Status;
 import com.chutneytesting.engine.domain.execution.report.StepExecutionReport;
 import com.chutneytesting.engine.domain.execution.report.StepExecutionReportBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import java.time.Instant;
 import java.util.Collections;
@@ -88,6 +89,7 @@ public class RemoteStepExecutorTest {
     public void should_propagate_failures_when_report_status_is_KO() {
 
         // Given
+        ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
         StepExecutionReport fakeRemoteReport = new StepExecutionReportBuilder().setName("name")
             .setStartDate(Instant.now())
             .setStatus(Status.FAILURE)
@@ -97,7 +99,7 @@ public class RemoteStepExecutorTest {
             .createStepExecutionReport();
 
         DelegationClient mockHttpClient = mock(DelegationClient.class);
-        Step step = new Step(mock(StepDataEvaluator.class), mock(StepDefinition.class), mock(StepExecutor.class), emptyList());
+        Step step = new Step(mock(StepDataEvaluator.class), mock(StepDefinition.class), mock(StepExecutor.class), emptyList(), objectMapper);
         Step spyCurrentStep = spy(step);
         NamedHostAndPort mockDelegate = mock(NamedHostAndPort.class);
         when(mockHttpClient.handDown(any(), any()))

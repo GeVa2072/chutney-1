@@ -24,6 +24,7 @@ import com.chutneytesting.engine.domain.execution.StepDefinition;
 import com.chutneytesting.engine.domain.execution.engine.Dataset;
 import com.chutneytesting.engine.domain.execution.engine.Environment;
 import com.chutneytesting.engine.domain.report.Reporter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.reactivex.rxjava3.core.Observable;
 import java.util.Optional;
 
@@ -33,7 +34,6 @@ public final class EmbeddedTestEngine implements TestEngine {
     private final Reporter reporter;
     private final ExecutionManager executionManager;
     private final ActionsConfiguration actionsConfiguration;
-
     public EmbeddedTestEngine(ExecutionEngine engine, Reporter reporter, ExecutionManager executionManager, ActionsConfiguration actionsConfiguration) {
         this.engine = engine;
         this.reporter = reporter;

@@ -26,6 +26,7 @@ import com.chutneytesting.engine.api.execution.StepDefinitionDto;
 import com.chutneytesting.engine.api.execution.StepExecutionReportDto;
 import com.chutneytesting.glacio.GlacioAdapterConfiguration;
 import com.chutneytesting.glacio.api.ExecutionRequestMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -43,11 +44,12 @@ public class EngineIntegrationTest {
     private static final String ENVIRONMENT = "ENV";
 
     private static GlacioAdapterConfiguration glacioAdapterConfiguration;
+    private static final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
 
     @BeforeAll
     public static void setUp() throws IOException {
         String envFolderPath = "src/test/resources/conf";
-        glacioAdapterConfiguration = new GlacioAdapterConfiguration(envFolderPath);
+        glacioAdapterConfiguration = new GlacioAdapterConfiguration(envFolderPath, objectMapper);
     }
 
     @Test

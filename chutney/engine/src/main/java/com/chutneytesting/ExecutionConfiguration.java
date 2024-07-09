@@ -44,6 +44,7 @@ import com.chutneytesting.engine.domain.report.Reporter;
 import com.chutneytesting.engine.infrastructure.delegation.HttpClient;
 import com.chutneytesting.tools.ThrowingFunction;
 import com.chutneytesting.tools.loader.ExtensionLoaders;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.Set;
@@ -65,16 +66,16 @@ public class ExecutionConfiguration {
 
     private final SpelFunctions spelFunctions;
     private final Set<StepExecutionStrategy> stepExecutionStrategies;
-
+    private final ObjectMapper objectMapper;
     private final Long reporterTTL;
 
-    public ExecutionConfiguration() {
-        this(5L, Executors.newFixedThreadPool(10), emptyMap(), null, null);
+    public ExecutionConfiguration(ObjectMapper objectMapper) {
+        this(5L, Executors.newFixedThreadPool(10), emptyMap(), null, null, objectMapper);
     }
 
-    public ExecutionConfiguration(Long reporterTTL, ExecutorService actionExecutor, Map<String, String> actionsConfiguration, String user, String password) {
+    public ExecutionConfiguration(Long reporterTTL, ExecutorService actionExecutor, Map<String, String> actionsConfiguration, String user, String password, ObjectMapper objectMapper) {
         this.reporterTTL = reporterTTL;
-
+        this.objectMapper = objectMapper;
         ActionTemplateLoader actionTemplateLoaderV2 = createActionTemplateLoaderV2();
         spelFunctions = createSpelFunctions();
         stepExecutionStrategies = createStepExecutionStrategies();
@@ -141,7 +142,8 @@ public class ExecutionConfiguration {
             new StepExecutionStrategies(stepExecutionStrategies),
             new DelegationService(new DefaultStepExecutor(actionTemplateRegistry), new HttpClient(user, password)),
             reporter,
-            actionExecutor);
+            actionExecutor,
+            objectMapper);
     }
 
     private TestEngine createEmbeddedTestEngine(ActionsConfiguration actionsConfiguration) {

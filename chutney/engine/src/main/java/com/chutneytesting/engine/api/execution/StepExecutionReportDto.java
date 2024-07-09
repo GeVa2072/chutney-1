@@ -20,7 +20,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
-public class StepExecutionReportDto {
+public class  StepExecutionReportDto {
 
     public String name;
     public String environment;
@@ -73,14 +73,18 @@ public class StepExecutionReportDto {
         public Map<String, Object> scenarioContext;
         public Map<String, Object> evaluatedInputs;
         public Map<String, Object> stepResults;
+        public Map<String, String> evaluatedInputsSnapshot;
+        public Map<String, String> stepResultsSnapshot;
 
         public StepContextDto() {
         }
 
-        public StepContextDto(Map<String, Object> scenarioContext, Map<String, Object> evaluatedInputs, Map<String, Object> stepResults) {
+        public StepContextDto(Map<String, Object> scenarioContext, Map<String, Object> evaluatedInputs, Map<String, Object> stepResults, Map<String, String> evaluatedInputsSnapshot, Map<String, String> stepResultsSnapshot) {
             this.scenarioContext = scenarioContext;
             this.evaluatedInputs = evaluatedInputs;
             this.stepResults = stepResults;
+            this.evaluatedInputsSnapshot = evaluatedInputsSnapshot;
+            this.stepResultsSnapshot = stepResultsSnapshot;
         }
     }
 }

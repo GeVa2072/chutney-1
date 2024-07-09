@@ -23,6 +23,7 @@ import com.chutneytesting.engine.api.execution.StepExecutionReportDto;
 import com.chutneytesting.server.core.domain.execution.report.ServerReportStatus;
 import com.chutneytesting.server.core.domain.execution.report.StepExecutionReportCore;
 import com.chutneytesting.server.core.domain.execution.report.StepExecutionReportCoreBuilder;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 class StepExecutionReportMapperCore {
@@ -39,8 +40,8 @@ class StepExecutionReportMapperCore {
             .setInformation(reportDto.information)
             .setErrors(reportDto.errors)
             .setSteps(reportDto.steps.stream().map(StepExecutionReportMapperCore::fromDto).collect(Collectors.toList()))
-            .setEvaluatedInputs(reportDto.context != null ? reportDto.context.evaluatedInputs : EMPTY_MAP)
-            .setStepOutputs(reportDto.context != null ? reportDto.context.stepResults : EMPTY_MAP)
+            .setEvaluatedInputs(reportDto.context != null ? new HashMap<>(reportDto.context.evaluatedInputsSnapshot) : EMPTY_MAP)
+            .setStepOutputs(reportDto.context != null ? new HashMap<>(reportDto.context.stepResultsSnapshot) : EMPTY_MAP)
             .setType(reportDto.type)
             .setTargetName(reportDto.targetName)
             .setTargetUrl(reportDto.targetUrl)
