@@ -181,11 +181,17 @@ Feature: Final action for registering final actions for a testcase
                 With uri /api/ui/scenario/execution/v1/${#scenarioId}/ENV_FINAL
                 With timeout 5 s
                 Take report ${#body}
+                Take evaluatedInputs ${#json(#body, "$.report.steps[0].steps[0].evaluatedInputs")}
+                Take validation ${#json(#evaluatedInputs, "$.validations")}
                 Validate httpStatusCode_200 ${#status == 200}
         Then The report contains the executions (in declaration reverse order) of all the final actions action
             Do json-assert
+                With document ${#validation}
+                With expected
+                | $.http_OK | \${ #status == 200 } |
+        And The report contains the executions (in declaration reverse order) of all the final actions action
+            Do json-assert
                 With document ${#report}
                 With expected
-                | $.report.steps[0].steps[0].evaluatedInputs.validations.http_OK | \${ #status == 200 } |
                 | $.report.steps[1].steps[0].type | http-get |
                 | $.report.steps[1].steps[0].status | SUCCESS |

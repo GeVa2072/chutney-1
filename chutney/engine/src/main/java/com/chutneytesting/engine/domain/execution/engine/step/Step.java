@@ -462,7 +462,7 @@ public class Step {
             Map<String, String> stringMap = new HashMap<>();
             originalMap.forEach((key, value) -> {
                 try {
-                    stringMap.put(key, value instanceof String ? String.valueOf(value) : objectMapper.writeValueAsString(value));
+                    stringMap.put(key, objectMapper.writeValueAsString(value));
                 } catch (JsonProcessingException e) {
                     throw new RuntimeException(e);
                 }

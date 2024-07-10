@@ -126,6 +126,6 @@ Feature: Execution with jsonPath function
                 Validate httpStatusCode_200 ${#status == 200}
         Then the extracted value is '{field1=value1}'
             Do compare
-                With actual ${#json(#report, "$.report.steps[1].stepOutputs.extracted.field1")}
+                With actual ${#json(${#json(#report, "$.report.steps[1].stepOutputs)}.extracted.field1")}
                 With expected value1
                 With mode equals
